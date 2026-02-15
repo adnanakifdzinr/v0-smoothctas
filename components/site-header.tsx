@@ -85,16 +85,15 @@ export function SiteHeader() {
 
   return (
     <>
-      <header
+      <motion.header
         className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-500 ease-out ${scrollY >= 100 || isMenuOpen ? "bg-[#1A1A1A]" : "bg-[#1A1A1A]"
           }`}
+        initial={{ y: '-100%' }}
+        animate={{ y: isWebOpenAnimating ? 0 : '-100%' }}
+        transition={{ duration: 0.8, ease: 'easeOut' }}
       >
-        <motion.div 
+        <div 
           className="flex items-center justify-between px-3 md:px-5 lg:px-8 py-3 md:py-4 w-full"
-          animate={{
-            y: isWebOpenAnimating ? 80 : 0,
-          }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           {/* Logo Text - LOZINR */}
           <Link href="/">
@@ -179,8 +178,8 @@ export function SiteHeader() {
               </div>
             </button>
           </div>
-        </motion.div>
-      </header>
+        </div>
+      </motion.header>
 
       <div
         className={`fixed inset-0 z-40 overflow-hidden ${isAnimating || isMenuOpen ? "pointer-events-auto" : "pointer-events-none"}`}
