@@ -82,7 +82,7 @@ export function WebOpenAnimation() {
                 transition={{ duration: 0.6, delay: 0.4, ease: [0.33, 1, 0.68, 1] }}
                 className={`text-black font-medium ${textSize} whitespace-nowrap`}
               >
-                {isMobile ? 'Enter' : 'Enter on website'}
+                {isMobile ? 'Open Website' : 'Open Website'}
               </motion.span>
 
               {/* Arrow circle - static background */}
