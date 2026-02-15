@@ -164,6 +164,7 @@ export function Footer() {
                   <motion.div
                     className="w-8 h-8 rounded-full bg-black flex items-center justify-center flex-shrink-0 overflow-hidden relative"
                     animate={{ gap: hoveredCta === 'call' ? 12 : 8 }}
+                    initial={{ gap: 8 }}
                   >
                     <motion.div
                       animate={{
@@ -210,6 +211,7 @@ export function Footer() {
                   <motion.div
                     className="w-8 h-8 rounded-full bg-black flex items-center justify-center flex-shrink-0 overflow-hidden relative"
                     animate={{ gap: hoveredCta === 'email' ? 12 : 8 }}
+                    initial={{ gap: 8 }}
                   >
                     <motion.div
                       animate={{
