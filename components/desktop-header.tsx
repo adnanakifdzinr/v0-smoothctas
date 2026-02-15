@@ -4,10 +4,15 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ArrowRight } from "lucide-react"
 import { useScrollDirection } from "@/hooks/use-scroll-direction"
+import { motion } from "framer-motion"
+import { useWebOpenAnimation } from "@/context/animation-context"
+import { useState } from "react"
 
 export function DesktopHeader() {
   const pathname = usePathname()
   const isHeaderVisible = useScrollDirection()
+  const { isWebOpenAnimating } = useWebOpenAnimation()
+  const [isHovering, setIsHovering] = useState(false)
 
   const navLinks = [
     { href: "/", label: "Work", section: "work" },
@@ -25,14 +30,15 @@ export function DesktopHeader() {
   }
 
   return (
-    <header
-      className="hidden lg:block fixed top-0 left-0 right-0 z-[9999] bg-background w-full transition-transform duration-300 ease-out"
-      style={{
-        transform: isHeaderVisible ? 'translateY(0)' : 'translateY(-100%)',
+    <motion.header
+      className="hidden lg:block fixed top-0 left-0 right-0 z-[9999] bg-background w-full"
+      animate={{
+        transform: isHeaderVisible ? 'translateY(0px)' : 'translateY(-100%)',
+        y: isWebOpenAnimating ? 80 : 0,
       }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
     >
       <style>{`
-        
         .header-nav-link {
           position: relative;
           transition: color 0.3s ease;
@@ -75,58 +81,6 @@ export function DesktopHeader() {
 
         .header-social-link:hover::after {
           transform: scaleX(1);
-        }
-
-        .header-cta-button {
-          position: relative;
-          overflow: hidden;
-          z-index: 10;
-        }
-
-        .header-cta-button::before {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          height: 0%;
-          background-color: #ff3c00;
-          z-index: -1;
-          transition: height 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-          transform-origin: bottom;
-        }
-
-        .header-cta-button::after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          height: 0%;
-          background-color: #ff3c00;
-          z-index: -1;
-          transition: height 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-          transform-origin: bottom;
-        }
-
-        .header-cta-button-text {
-          position: relative;
-          z-index: 1;
-          transition: color 0.4s ease 0.1s;
-        }
-
-        .header-cta-button:hover::before {
-          height: 100%;
-          z-index: -1;
-        }
-
-        .header-cta-button:hover::after {
-          height: 100%;
-          z-index: -1;
-        }
-
-        .header-cta-button:hover .header-cta-button-text {
-          color: white;
         }
       `}</style>
       <div className="w-full md:px-0 lg:px-8 py-2.4">
@@ -174,20 +128,54 @@ export function DesktopHeader() {
             </div>
           </nav>
 
-          <button
+          <motion.button
             onClick={() => {
               const element = document.getElementById("contact")
               if (element) {
                 element.scrollIntoView({ behavior: "smooth" })
               }
             }}
-            className="header-cta-button flex-shrink-0 px-5 py-2 bg-black text-white text-[14px] font-medium flex items-center gap-2 cursor-pointer"
+            initial={{ width: '56px' }}
+            animate={{ width: isHovering ? '220px' : '190px' }}
+            onHoverStart={() => setIsHovering(true)}
+            onHoverEnd={() => setIsHovering(false)}
+            className="flex-shrink-0 h-14 bg-white border-2 border-black rounded-full flex items-center justify-between px-1.5 gap-2 overflow-hidden cursor-pointer focus:outline-none relative"
           >
-            <span className="header-cta-button-text">Lets Talk</span>
-            <ArrowRight size={16} />
-          </button>
+            <motion.span
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-black font-medium text-[16px] whitespace-nowrap"
+            >
+              Lets Talk
+            </motion.span>
+
+            <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center overflow-hidden relative flex-shrink-0">
+              <motion.div
+                animate={{
+                  x: isHovering ? 40 : 0,
+                  opacity: isHovering ? 0 : 1
+                }}
+                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="absolute"
+              >
+                <ArrowRight className="w-5 h-5 text-white" strokeWidth={2.5} />
+              </motion.div>
+
+              <motion.div
+                animate={{
+                  x: isHovering ? 0 : -40,
+                  opacity: isHovering ? 1 : 0
+                }}
+                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                className="absolute"
+              >
+                <ArrowRight className="w-5 h-5 text-white" strokeWidth={2.5} />
+              </motion.div>
+            </div>
+          </motion.button>
         </div>
       </div>
-    </header>
+    </motion.header>
   )
 }

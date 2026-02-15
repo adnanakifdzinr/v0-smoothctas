@@ -4,15 +4,18 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useWebOpenAnimation } from '@/context/animation-context';
 
 export function WebOpenAnimation() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const isMobile = useIsMobile();
+  const { setIsWebOpenAnimating } = useWebOpenAnimation();
 
   const handleEnter = () => {
     setIsAnimating(true);
+    setIsWebOpenAnimating(true);
   };
 
   React.useEffect(() => {
