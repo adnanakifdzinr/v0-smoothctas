@@ -124,7 +124,7 @@ export function SiteHeader() {
                 Schedule a Call
               </motion.span>
 
-              <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-black flex items-center justify-center overflow-hidden relative flex-shrink-0">
+              <div className="w-7 h-7 md:w-10 md:h-10 rounded-full bg-black flex items-center justify-center overflow-hidden relative flex-shrink-0">
                 <motion.div
                   animate={{
                     x: isCtaHovering ? 40 : 0,
