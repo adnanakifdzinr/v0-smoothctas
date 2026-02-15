@@ -92,7 +92,7 @@ export function SiteHeader() {
         animate={{ y: isWebOpenAnimating ? 0 : '-100%' }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
-        <div 
+        <div
           className="flex items-center justify-between px-3 md:px-5 lg:px-8 py-3 md:py-4 w-full"
         >
           {/* Logo Text - LOZINR */}
@@ -110,7 +110,7 @@ export function SiteHeader() {
                 }
               }}
               initial={{ width: '48px' }}
-              animate={{ width: isCtaHovering ? '200px' : '170px' }}
+              animate={{ width: isCtaHovering ? '170px' : '170px' }}
               onHoverStart={() => setIsCtaHovering(true)}
               onHoverEnd={() => setIsCtaHovering(false)}
               className="h-12 md:h-14 bg-white border-2 border-white rounded-full flex items-center justify-between px-1.5 gap-2 overflow-hidden cursor-pointer focus:outline-none relative"
