@@ -113,7 +113,7 @@ export function SiteHeader() {
               animate={{ width: isCtaHovering ? '170px' : '170px' }}
               onHoverStart={() => setIsCtaHovering(true)}
               onHoverEnd={() => setIsCtaHovering(false)}
-              className="h-12 md:h-10 bg-white border-2 border-white rounded-full flex items-center justify-between px-1.5 gap-2 overflow-hidden cursor-pointer focus:outline-none relative"
+              className="h-12 md:h-12 bg-white border-2 border-white rounded-full flex items-center justify-between px-1.5 gap-2 overflow-hidden cursor-pointer focus:outline-none relative"
             >
               <motion.span
                 initial={{ opacity: 0, x: -10 }}
