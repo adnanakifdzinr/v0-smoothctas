@@ -4,6 +4,9 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useScrollDirection } from "@/hooks/use-scroll-direction"
+import { motion } from "framer-motion"
+import { ArrowRight } from "lucide-react"
+import { useWebOpenAnimation } from "@/context/animation-context"
 import { AboutPopup } from "@/components/about-popup"
 import { ContactPopup } from "@/components/contact-popup"
 
@@ -15,8 +18,10 @@ export function SiteHeader() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isAboutOpen, setIsAboutOpen] = useState(false)
   const [isContactOpen, setIsContactOpen] = useState(false)
+  const [isCtaHovering, setIsCtaHovering] = useState(false)
   const isScrollDirectionUp = useScrollDirection()
   const pathname = usePathname()
+  const { isWebOpenAnimating } = useWebOpenAnimation()
 
   useEffect(() => {
     setIsMenuOpen(false)
@@ -84,7 +89,13 @@ export function SiteHeader() {
         className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-500 ease-out ${scrollY >= 100 || isMenuOpen ? "bg-[#1A1A1A]" : "bg-[#1A1A1A]"
           }`}
       >
-        <div className="flex items-center justify-between px-3 md:px-5 lg:px-8 py-3 md:py-4 w-full">
+        <motion.div 
+          className="flex items-center justify-between px-3 md:px-5 lg:px-8 py-3 md:py-4 w-full"
+          animate={{
+            y: isWebOpenAnimating ? 80 : 0,
+          }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
           {/* Logo Text - LOZINR */}
           <Link href="/">
             <span className="text-white font-bold text-lg md:text-xl tracking-tight cursor-pointer">LOZINR</span>
@@ -92,17 +103,52 @@ export function SiteHeader() {
 
           {/* CTA Button and Hamburger */}
           <div className="flex items-center gap-3 md:gap-4">
-            <button
+            <motion.button
               onClick={() => {
                 const element = document.getElementById("contact")
                 if (element) {
                   element.scrollIntoView({ behavior: "smooth" })
                 }
               }}
-              className="px-4 md:px-5 py-2 md:py-2.5 text-[14px] md:text-[14px] lg:text-[16px] font-medium rounded-full tracking-tighter transition-all duration-500 cursor-pointer text-white border border-white"
+              initial={{ width: '48px' }}
+              animate={{ width: isCtaHovering ? '200px' : '170px' }}
+              onHoverStart={() => setIsCtaHovering(true)}
+              onHoverEnd={() => setIsCtaHovering(false)}
+              className="h-12 md:h-14 bg-white border-2 border-white rounded-full flex items-center justify-between px-1.5 gap-2 overflow-hidden cursor-pointer focus:outline-none relative"
             >
-              Schedule a Call
-            </button>
+              <motion.span
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="text-black font-medium text-[14px] md:text-[16px] whitespace-nowrap"
+              >
+                Schedule a Call
+              </motion.span>
+
+              <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-black flex items-center justify-center overflow-hidden relative flex-shrink-0">
+                <motion.div
+                  animate={{
+                    x: isCtaHovering ? 40 : 0,
+                    opacity: isCtaHovering ? 0 : 1
+                  }}
+                  transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  className="absolute"
+                >
+                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-white" strokeWidth={2.5} />
+                </motion.div>
+
+                <motion.div
+                  animate={{
+                    x: isCtaHovering ? 0 : -40,
+                    opacity: isCtaHovering ? 1 : 0
+                  }}
+                  transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                  className="absolute"
+                >
+                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5 text-white" strokeWidth={2.5} />
+                </motion.div>
+              </div>
+            </motion.button>
 
             {/* Hamburger Button */}
             <button
@@ -133,7 +179,7 @@ export function SiteHeader() {
               </div>
             </button>
           </div>
-        </div>
+        </motion.div>
       </header>
 
       <div
