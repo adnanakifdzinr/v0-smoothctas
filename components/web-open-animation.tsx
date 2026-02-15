@@ -3,11 +3,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export function WebOpenAnimation() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleEnter = () => {
     setIsAnimating(true);
@@ -19,6 +21,15 @@ export function WebOpenAnimation() {
     }, 300);
     return () => clearTimeout(timer);
   }, []);
+
+  // Responsive sizing - scales proportionally on mobile
+  const buttonWidth = isMobile ? '48px' : '56px';
+  const expandedWidth = isMobile ? (isHovering ? '180px' : '155px') : (isHovering ? '220px' : '190px');
+  const buttonHeight = isMobile ? 'h-12' : 'h-14';
+  const circleSize = isMobile ? 'w-9 h-9' : 'w-10 h-10';
+  const arrowSize = isMobile ? 'w-4 h-4' : 'w-5 h-5';
+  const textSize = isMobile ? 'text-sm' : 'text-[16px]';
+  const gap = isMobile ? 'gap-1.5' : 'gap-2';
 
   return (
     <AnimatePresence mode="wait">
@@ -53,51 +64,51 @@ export function WebOpenAnimation() {
           />
 
           {/* CTA Button Container */}
-          <div className="fixed inset-0 flex items-center justify-center" style={{ zIndex: 9999 }}>
+          <div className="fixed inset-0 flex items-center justify-center px-4" style={{ zIndex: 9999 }}>
             <motion.button
-              initial={{ width: '56px' }}
-              animate={{ width: isVisible ? (isHovering ? '220px' : '190px') : '56px' }}
+              initial={{ width: buttonWidth }}
+              animate={{ width: isVisible ? expandedWidth : buttonWidth }}
               exit={{ x: '150vw', opacity: 0 }}
               transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-              onHoverStart={() => setIsHovering(true)}
-              onHoverEnd={() => setIsHovering(false)}
+              onHoverStart={() => !isMobile && setIsHovering(true)}
+              onHoverEnd={() => !isMobile && setIsHovering(false)}
               onClick={handleEnter}
-              className="relative h-14 bg-white border-2 border-black rounded-full flex items-center justify-between px-1.5 gap-2 overflow-hidden cursor-pointer focus:outline-none"
+              className={`relative ${buttonHeight} bg-white border-2 border-black rounded-full flex items-center justify-between px-1.5 ${gap} overflow-hidden cursor-pointer focus:outline-none`}
             >
               {/* Left text - fades in after button expands */}
               <motion.span
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : -10 }}
                 transition={{ duration: 0.6, delay: 0.4, ease: [0.33, 1, 0.68, 1] }}
-                className="text-black font-medium text-[16px] whitespace-nowrap"
+                className={`text-black font-medium ${textSize} whitespace-nowrap`}
               >
-                Enter on website
+                {isMobile ? 'Enter' : 'Enter on website'}
               </motion.span>
 
               {/* Arrow circle - static background */}
-              <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center overflow-hidden relative flex-shrink-0">
+              <div className={`${circleSize} rounded-full bg-black flex items-center justify-center overflow-hidden relative flex-shrink-0`}>
                 {/* Main arrow - exits right on hover */}
                 <motion.div
                   animate={{
-                    x: isHovering ? 40 : 0,
-                    opacity: isHovering ? 0 : 1
+                    x: !isMobile && isHovering ? 40 : 0,
+                    opacity: !isMobile && isHovering ? 0 : 1
                   }}
                   transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                   className="absolute"
                 >
-                  <ArrowRight className="w-5 h-5 text-white" strokeWidth={2.5} />
+                  <ArrowRight className={`${arrowSize} text-white`} strokeWidth={2.5} />
                 </motion.div>
 
                 {/* Secondary arrow - enters from left on hover */}
                 <motion.div
                   animate={{
-                    x: isHovering ? 0 : -40,
-                    opacity: isHovering ? 1 : 0
+                    x: !isMobile && isHovering ? 0 : -40,
+                    opacity: !isMobile && isHovering ? 1 : 0
                   }}
                   transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
                   className="absolute"
                 >
-                  <ArrowRight className="w-5 h-5 text-white" strokeWidth={2.5} />
+                  <ArrowRight className={`${arrowSize} text-white`} strokeWidth={2.5} />
                 </motion.div>
               </div>
             </motion.button>
