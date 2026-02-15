@@ -4,18 +4,15 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useWebOpenAnimation } from '@/context/animation-context';
 
 export function WebOpenAnimation() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const isMobile = useIsMobile();
-  const { setIsWebOpenAnimating } = useWebOpenAnimation();
 
   const handleEnter = () => {
     setIsAnimating(true);
-    setIsWebOpenAnimating(true);
   };
 
   React.useEffect(() => {
@@ -85,7 +82,7 @@ export function WebOpenAnimation() {
                 transition={{ duration: 0.6, delay: 0.4, ease: [0.33, 1, 0.68, 1] }}
                 className={`text-black font-medium ${textSize} whitespace-nowrap`}
               >
-                {isMobile ? 'Open website' : 'Open website'}
+                {isMobile ? 'Enter' : 'Enter on website'}
               </motion.span>
 
               {/* Arrow circle - static background */}
